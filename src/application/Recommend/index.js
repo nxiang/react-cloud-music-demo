@@ -3,14 +3,16 @@ import Slider from '../../components/slider'
 import { connect } from 'react-redux'
 import * as actionTypes from './store/actionCreators'
 import RecommendList from '../../components/list'
-import Scroll from '../../components/scroll'
+import Scroll from '../../baseUI/scroll'
 import { Content } from './style'
 import { forceCheck } from 'react-lazyload'
 import Loading from '../../baseUI/loading'
+import { renderRoutes } from 'react-router-config'
 
 function Recommend(props) {
   const { bannerList,recommendList } = props
   const { getBannerDataDisPatch, getRecommendListDataDispatch,enterLoading } = props
+  console.log('Recommend',props)
   useEffect(()=>{
     !bannerList.size && getBannerDataDisPatch()
     !recommendList.size && getRecommendListDataDispatch()
@@ -21,10 +23,13 @@ function Recommend(props) {
   return (
     <Content>
       <Scroll onScroll={forceCheck}>
-        <Slider bannerList={bannerListJS}></Slider>
-        <RecommendList recommendList={recommendListJS}></RecommendList>
+        <div>
+          <Slider bannerList={bannerListJS}></Slider>
+          <RecommendList recommendList={recommendListJS}></RecommendList>
+        </div>
       </Scroll>
-      {enterLoading ? <Loading></Loading>: null}
+      <Loading show={enterLoading}></Loading>
+      {renderRoutes(props.route.routes)}
     </Content>
   )
 }
